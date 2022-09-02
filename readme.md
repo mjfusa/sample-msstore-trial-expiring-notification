@@ -44,5 +44,5 @@ This sample includes the following projects:
 
 The **BackgroundPrompt** background task raises a toast notification and is triggered by a timer event every four hours. For development purposes, the toast notification can be raised by triggering by a TimeZoneChange event. Alternatively, you can invoke the background task while debugging the sample by using the **Lifecycle Events** dropdown in Visual Studio as shown below:
 
-![Lifecycle Events dropdown](./Images/LifecycleEvents.png)
+![Lifecycle Events dropdown](./Images/LifeCycleEvents.png)
 
