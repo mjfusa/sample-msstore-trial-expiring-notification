@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+		<Platforms>x64;x86</Platforms>
+		<RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<!-- CsWinRT properties -->
+	<PropertyGroup>
+		<CsWinRTComponent>true</CsWinRTComponent>
+		<CsWinRTWindowsMetadata>10.0.19041.0</CsWinRTWindowsMetadata>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="WinRT.Host.runtimeconfig.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>
