@@ -9,6 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrialExpiringPrompt", "Tria
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundPrompt", "BackgroundPrompt\BackgroundPrompt.csproj", "{846B96C2-226E-4AC5-A69C-73ED55D629A2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC2D969F-A69E-46C3-8E66-48A7F7AF677E}"
+	ProjectSection(SolutionItems) = preProject
+		Images\LifeCycleEvents.png = Images\LifeCycleEvents.png
+		readme.md = readme.md
+		Images\TrialExpiringPrompt.png = Images\TrialExpiringPrompt.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

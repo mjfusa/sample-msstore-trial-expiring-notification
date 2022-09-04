@@ -152,11 +152,10 @@ namespace TrialExpiringPrompt
         {
             TimeSpan res= new TimeSpan(0);
             var license = await StoreContext.GetDefault().GetAppLicenseAsync();
-            //if (license.IsTrial)
-                if (true)
-                {
-                    //var expDate = license.ExpirationDate;
-                var expDate = new DateTimeOffset(2022, 12, 4, 13, 1, 1, 0, new TimeSpan(1, 0, 0));
+            if (license.IsTrial)
+            {
+                var expDate = license.ExpirationDate;
+                //var expDate = new DateTimeOffset(2022, 12, 4, 13, 1, 1, 0, new TimeSpan(1, 0, 0));
 
                 var timeRemaining = expDate - DateTimeOffset.UtcNow;
                 res = timeRemaining;
@@ -191,7 +190,7 @@ namespace TrialExpiringPrompt
                     // Send a background message
                     case "purchase":
                         // Prompt user to purchase
-                        var res = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9P2209BWF11T"));
+                        var res = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9NKSVZGRD2QW"));
 
                         // If the UI app isn't open
                         if (m_window == null)
