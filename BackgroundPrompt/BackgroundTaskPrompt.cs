@@ -40,7 +40,6 @@ namespace BackgroundPrompt
                 .SetContent("Click to purchase Contoso EP 2023")
                 .AddArgument("action", "purchase")
                 .SetBackgroundActivation());
-            
             var toastXml = tcb.GetXml();
             var toast = new ToastNotification(toastXml);
             ToastNotificationManager.CreateToastNotifier().Show(toast);

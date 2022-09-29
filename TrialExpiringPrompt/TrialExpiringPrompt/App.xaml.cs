@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Services.Store;
+using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -152,11 +153,19 @@ namespace TrialExpiringPrompt
         {
             TimeSpan res= new TimeSpan(0);
             var license = await StoreContext.GetDefault().GetAppLicenseAsync();
+#if DEBUG
+            if (true)
+#else
             if (license.IsTrial)
+#endif
             {
+#if DEBUG
+                DateTime sourceDate = new DateTime(2022, 12, 24, 13, 1, 1);
+                DateTime utcTime = DateTime.SpecifyKind(sourceDate, DateTimeKind.Utc);
+                var expDate = new DateTimeOffset(utcTime, TimeSpan.Zero);
+#else
                 var expDate = license.ExpirationDate;
-                //var expDate = new DateTimeOffset(2022, 12, 4, 13, 1, 1, 0, new TimeSpan(1, 0, 0));
-
+#endif
                 var timeRemaining = expDate - DateTimeOffset.UtcNow;
                 res = timeRemaining;
             }
@@ -180,28 +189,37 @@ namespace TrialExpiringPrompt
         {
             // Use the dispatcher from the window if present, otherwise the app dispatcher
             var dispatcherQueue = m_window?.DispatcherQueue ?? App.DispatcherQueue;
-
+            StoreContext _storeContext = StoreContext.GetDefault();
             dispatcherQueue.TryEnqueue(async delegate
             {
                 var args = ToastArguments.Parse(e.Argument);
+                if (args.Count > 0) {
 
-                switch (args["action"])
+                    switch (args["action"])
+                    {
+                        // Send a background message
+                        case "purchase":
+                            LaunchAndBringToForegroundIfNeeded();
+                            if (m_window!=null)
+                            {
+                                var hWnd =  WinRT.Interop.WindowNative.GetWindowHandle(m_window);
+                                WinRT.Interop.InitializeWithWindow.Initialize(_storeContext, hWnd);
+                            }
+                            // Prompt user to purchase
+                            await _storeContext.RequestPurchaseAsync("9NKSVZGRD2QW");
+                            break;
+                    }
+                } else
                 {
-                    // Send a background message
-                    case "purchase":
-                        // Prompt user to purchase
-                        var res = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9NKSVZGRD2QW"));
-
-                        // If the UI app isn't open
-                        if (m_window == null)
-                        {
-                            // Close since we're done
-                            Process.GetCurrentProcess().Kill();
-                        }
-
-                        break;
-
+                    await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9NKSVZGRD2QW"));
                 }
+                // If the UI app isn't open
+                if (m_window == null)
+                {
+                    // Close since we're done
+                    Process.GetCurrentProcess().Kill();
+                }
+
             });
         }
 
