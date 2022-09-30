@@ -11,7 +11,7 @@
   <Identity
     Name="57012MikeFrancis.19347E8D039DA"
     Publisher="CN=76F03FF0-6FBC-4475-8F1A-617EA5713D5C"
-    Version="1.0.1.0" />
+    Version="0.0.1.0" />
 
   <Properties>
     <DisplayName>Trial Test 456</DisplayName>

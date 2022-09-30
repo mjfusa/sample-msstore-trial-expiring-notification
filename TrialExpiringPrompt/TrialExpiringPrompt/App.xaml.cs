@@ -43,7 +43,7 @@ namespace TrialExpiringPrompt
 
         protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            // TODO Determine if Trial
+            // Determine if Trial
             var TimeRemaining = await IsTrial();
 
             if (TimeRemaining != new TimeSpan(0))
@@ -53,10 +53,6 @@ namespace TrialExpiringPrompt
 
                 RegisterBackgroundTaskPrompt();
                 
-                // Save time remaining in local storage to fetch in background task
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                localSettings.Values["TrialTimeRemaining"] = TimeRemaining;
-
                 // Get the app-level dispatcher
                 DispatcherQueue = global::Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 

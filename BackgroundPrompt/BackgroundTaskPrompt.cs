@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Windows.ApplicationModel.Background;
+using Windows.Services.Store;
 using Windows.UI.Notifications;
 
 namespace BackgroundPrompt
@@ -25,14 +26,28 @@ namespace BackgroundPrompt
             _deferral.Complete();
         }
 
-        private static void SendToast()
+        private static async void SendToast()
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            var TimeRemaining = localSettings.Values["TrialTimeRemaining"];
+            TimeSpan res = new TimeSpan(0);
+            var license = await StoreContext.GetDefault().GetAppLicenseAsync();
+#if DEBUG
+            if (true)
+#else
+            if (license.IsTrial)
+#endif
+            {
+#if DEBUG
+                DateTime sourceDate = new DateTime(2022, 12, 24, 13, 1, 1);
+                DateTime utcTime = DateTime.SpecifyKind(sourceDate, DateTimeKind.Utc);
+                var expDate = new DateTimeOffset(utcTime, TimeSpan.Zero);
+#else
+                var expDate = license.ExpirationDate;
+#endif
+                var timeRemaining = expDate - DateTimeOffset.UtcNow;
+                int daysToExpire = ((TimeSpan)timeRemaining).Days;
 
-            int daysToExpire = ((TimeSpan)TimeRemaining).Days;
-            var imageUri = Path.GetFullPath(@"Images\contoso.jpeg");
-            var tcb = new ToastContentBuilder()
+                var imageUri = Path.GetFullPath(@"Images\contoso.jpeg");
+                var tcb = new ToastContentBuilder()
                 .AddAppLogoOverride(new Uri(imageUri), ToastGenericAppLogoCrop.Default, "logo", null)
                 .AddText("Purchase Contoso EP 2023")
                 .AddText($"Thanks for using Contoso EP 2023! Your trial expires in {daysToExpire} days.")
@@ -40,11 +55,11 @@ namespace BackgroundPrompt
                 .SetContent("Click to purchase Contoso EP 2023")
                 .AddArgument("action", "purchase")
                 .SetBackgroundActivation());
-            var toastXml = tcb.GetXml();
-            var toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier().Show(toast);
+                var toastXml = tcb.GetXml();
+                var toast = new ToastNotification(toastXml);
+                ToastNotificationManager.CreateToastNotifier().Show(toast);
+            }
         }
-
     }
 
 }
