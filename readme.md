@@ -7,7 +7,7 @@ If you're using a time-bound free trail when publishing your apps, you may want 
 
 ## Prompt the user even if the app is not running using a Background Task
 
-This WinUI 3 Desktop Packaged sample detects if the user is in Trial mode and if so, periodically prompts the user to purchase using a toast notification. When the user selects 'Click to purchase', the are directed to the app's product description page in the Microsoft Store.
+This WinUI 3 Desktop Packaged sample detects if the user is in Trial mode and if so, periodically prompts the user to purchase using a toast notification. When the user selects 'Click to purchase', they are prompted to purchase the app.
 
 To not be dependent on the app running, a background task is used to prompt the user every four hours while the app is in ```Trial``` mode.
 
